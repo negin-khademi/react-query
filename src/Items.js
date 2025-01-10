@@ -3,7 +3,7 @@ import customFetch from './utils';
 import { useQuery } from '@tanstack/react-query';
 
 const Items = () => {
-  const { isPending, data } = useQuery({
+  const { isPending, data, isError, error } = useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
       const { data } = await customFetch.get('/');
@@ -13,7 +13,13 @@ const Items = () => {
   if (isPending) {
     return <p style={{ marginTop: '1rem' }}>Loading ...</p>;
   }
-  console.log(data.taskList);
+  if (isError) {
+    return <p style={{ marginTop: '1rem' }}>There was an error</p>;
+  }
+
+  // if (error) {
+  //   return <p style={{ marginTop: '1rem' }}>{error.response.data}</p>;
+  // }
   return (
     <div className="items">
       {data.taskList.map((item) => {
